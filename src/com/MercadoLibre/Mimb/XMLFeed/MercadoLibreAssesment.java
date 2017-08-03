@@ -83,7 +83,7 @@ public class MercadoLibreAssesment {
                     feedParser.open();
                     break;
                 case 1: case 2:
-                    feedParser.open(args[1]);
+                    feedParser.open(args[0]);
                     break;
                 
                 default:

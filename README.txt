@@ -1,5 +1,12 @@
 1. PARA EJECUTAR EL PROGRAMA DE PRUEBA.
-El siguiente programa permite crear un archivo XML de un poco más de 500 MB con la siguiente estructura. 
+EL proyecto fue creado en Netbeans 8.1 por lo que se sugiere probar el proyecto
+usando este IDE o versión superior.
+
+Para ejecutar el proyecto, se puede simplemente hacer click en el botón Run de la interface.
+(No se incluye el .jar por un problema con un paquete utilizado, el cual no es estándar)
+
+________________________________________
+El programa permite crear un archivo XML de un poco más de 500 MB con la siguiente estructura. 
 Es un programa en consola.
 
 <feed><row><title>Título 1</title><description>Description 1</description> </row><row><title>Título 2</><description>Description 2</description> </row><row><title>Título 3</><description>Description 3</description> </row>.... .... ....</feed>
@@ -24,7 +31,7 @@ El pirmer argumentos es el nombre del archivo con extensión, y el segundo es el
 
 2. SOBRE EL CÓDIGO
 
-2.1. El código fue creado utilizando Netbeans, así que el proyecto tiene la estructura de Netbeans, por lo tanto podrá encontrar los archivos fuente dentro de la carpeta MercadoLibreAssesment/src.
+2.1. El código fue creado utilizando el lenguaje Java, con el IDE Netbeans 8,1, así que el proyecto tiene la estructura de Netbeans, por lo tanto podrá encontrar los archivos fuente dentro de la carpeta MercadoLibreAssesment/src.
 
 El código está empaquetado en com.MercadoLibre.Mimb.XMLFeed, así que deberá abrir la ruta src/com/MercadoLibre/Mimb/XMLFeed para ver las clases
 
@@ -56,14 +63,11 @@ Se utilizaron excepciones estándar, y no se crearon extensiones de las excepcio
 
 No quedé satisfecha con la velocidad de ejecución, puesto que en una máquina con disco de estado sólido tardó 30 minutos en escribir 500MB (eso sí lo veo difícil de mejorar), pero tardó muchísimo en leer (otros 30 minutos casi). Así que si tuviera opción a hacer cambios, el más importante para mi sería mejorar esa velocidad.
 
-En cuanto al uso de memoria durante la escritura, es bastante bueno, pero no así durante la lectura. Ya no me hice tiempo para optimizarlo, creyendo que mi aproximación era óptima en sí.
+En cuanto al uso de memoria durante la escritura, es bastante bueno, pero no así durante la lectura. Ya no me hice tiempo para optimizarlo, pero debí usar lectura con cursor, en lugar de lectura con eventos, para dicho fin.
 
 También, me gustaría agregar un estimador de tiempo.
 
 En cuanto a la estructura del código, decidí hacer una clase singleton y una clase normal. La clase singleton es porque pienso que writer es como una impresora que crea el archivo (se puede usar una sola instancia de esa máquina para varias personas), pero reader pueden ser muchas instancias, como varias personas que están leyendo y copiando el archivo.
-
-4. EL REPOSITORIO
-Se incluyen los archivos ejecutables, y otros archivos que se deberían excluir, por efectos de FACILITAR la demostración.
 
 5. TIEMPO
 La prueba con un archivo de 500 MB corrió con escritura y lectura en un tiempo aproximado de 1 hora.
