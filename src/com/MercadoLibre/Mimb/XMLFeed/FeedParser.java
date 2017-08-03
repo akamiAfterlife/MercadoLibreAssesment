@@ -17,12 +17,15 @@
 package com.MercadoLibre.Mimb.XMLFeed;
 
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.Arrays;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
@@ -35,7 +38,7 @@ public class FeedParser {
     /**
      * Event reader for read the rows in the document
      */
-    private XMLEventReader eventReader;
+    private XMLStreamReader xmlStreamReader;
     /***
      * this flag indicates if a document is currently open
      */
@@ -46,9 +49,9 @@ public class FeedParser {
         return opened;
     }
     
-    public boolean hasNext()
+    public boolean hasNext() throws XMLStreamException
     {
-        return eventReader.hasNext();
+        return xmlStreamReader.hasNext();
     }
     
     /**
@@ -65,13 +68,15 @@ public class FeedParser {
      
       try {
          XMLInputFactory factory = XMLInputFactory.newInstance();
-         eventReader = factory.createXMLEventReader(
-            new FileReader( fileName ));
-            opened = true;
+        
+         xmlStreamReader = factory.createXMLStreamReader(fileName,
+                                   new FileInputStream(fileName));
+         opened = true;
+         
             
-         } catch (FileNotFoundException | XMLStreamException e) {
+      } catch (FileNotFoundException | XMLStreamException e) {
             e.printStackTrace(System.out);
-         }
+      }
     }
     
     /**
@@ -87,7 +92,7 @@ public class FeedParser {
      * Gets a row from the file and transform it to a FeedElement
      * @return next row in the feed, if exist, else null
      */
-    public FeedElement getNextElement()
+    public FeedElement getNextElement() throws XMLStreamException
     {
         FeedElement element = null;
         
@@ -97,20 +102,21 @@ public class FeedParser {
         boolean hasTitle = false, hasDescription = false, endRow = false;
         int eventType;
         
-        if (!eventReader.hasNext())
+        if (!xmlStreamReader.hasNext())
             return element;
         
         do
         {
             try{        
-                XMLEvent event = eventReader.nextEvent();
-                eventType = event.getEventType();
+                eventType = xmlStreamReader.next();
+                // event = eventReader.nextEvent();
+                //eventType = event.getEventType();
 
                 switch( eventType )  
                 {
                     case XMLStreamConstants.START_ELEMENT:
-                        StartElement startElement = event.asStartElement();
-                        String tag = startElement.getName().getLocalPart();
+                       
+                        String tag = xmlStreamReader.getLocalName();
 
                         if (tag.equalsIgnoreCase(FeedConstants.TAG_ROW)) {
                             element = new FeedElement();
@@ -125,17 +131,20 @@ public class FeedParser {
                     break;
 
                     case XMLStreamConstants.CHARACTERS:
-
+                        int start = xmlStreamReader.getTextStart();
+                        int length = xmlStreamReader.getTextLength();
+                        
                         if (element != null)
                         { 
                             if ( hasTitle )
                             {
-                                element.setTitle(event.asCharacters().toString());
+                                element.setTitle(new String(xmlStreamReader.getTextCharacters(), start,length));
+                              
                                 hasTitle = false;
                             }
                             else if ( hasDescription )
                             {
-                                element.setDescription(event.asCharacters().toString());
+                                element.setDescription(new String(xmlStreamReader.getTextCharacters(), start,length));
                                 hasDescription = false;
                             }
                         }
@@ -143,7 +152,7 @@ public class FeedParser {
                     break;
                     
                     case XMLStreamConstants.END_ELEMENT:
-                         endRow = event.asEndElement().getName().getLocalPart().equalsIgnoreCase(FeedConstants.TAG_ROW);
+                         endRow = xmlStreamReader.getLocalName().equalsIgnoreCase(FeedConstants.TAG_ROW);
                       
                     break;
                 }//end switch
@@ -153,7 +162,7 @@ public class FeedParser {
                 e.printStackTrace(System.out);
             }
                 
-        } while ( !endRow && eventReader.hasNext());
+        } while ( !endRow && xmlStreamReader.hasNext());
         
         return element;
     }//end method get Next Element

@@ -17,6 +17,8 @@
 
 package com.MercadoLibre.Mimb.XMLFeed;
 
+import javax.xml.stream.XMLStreamException;
+
 
 
 /**
@@ -31,7 +33,7 @@ public class MercadoLibreAssesment {
      * First argument is file name
      * Second argument is size in bytes
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws XMLStreamException {
         
        try{
             //shows messages in the console as write the file

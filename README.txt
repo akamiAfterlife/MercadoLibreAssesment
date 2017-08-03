@@ -63,7 +63,7 @@ Se utilizaron excepciones estándar, y no se crearon extensiones de las excepcio
 
 No quedé satisfecha con la velocidad de ejecución, puesto que en una máquina con disco de estado sólido tardó 30 minutos en escribir 500MB (eso sí lo veo difícil de mejorar), pero tardó muchísimo en leer (otros 30 minutos casi). Así que si tuviera opción a hacer cambios, el más importante para mi sería mejorar esa velocidad.
 
-En cuanto al uso de memoria durante la escritura, es bastante bueno, pero no así durante la lectura. Ya no me hice tiempo para optimizarlo, pero debí usar lectura con cursor, en lugar de lectura con eventos, para dicho fin.
+En cuanto al uso de memoria durante la ESCRITURA, es bastante bueno, pero NO así durante la LECTURA. Ya no me hice tiempo para optimizarlo, pero intenté tanto con cursores, como con eventos, y no dio buenos resultados en ningún acercamiento.
 
 También, me gustaría agregar un estimador de tiempo.
 
